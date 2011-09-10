@@ -1,6 +1,6 @@
 /*
     Live Tooltips 0.1 (compatible: jQuery 1.4.x)
-	by Patrick Bisenius, 2010
+	by Patrick Bisenius, 2011
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
-
-/* @TODO
- * - make more than one tooltip per element possible
- * - absolute positioning of a tooltip
- * - prevent the browser's default tooltip on links 
- */
 
 (function($, document) {
 	
@@ -46,7 +40,7 @@
 		// add tooltip if one of the startEvents is fired
 		this.live(settings.startEvents, settings, function(e) {
 			e.preventDefault();
-			$(this).data('_oldTitle', this.title).removeAttr('title');
+			$(this).data('_title', this.title).removeAttr('title');
 			setTimeout(function(e, elem, settings) {initTooltip.call(elem, e, settings);}, settings.delay, e, this, settings);
 
 		});
@@ -64,8 +58,8 @@
 			// create tooltip
 			var tooltip = $('<div></div>').addClass('tooltip jq-tooltip').addClass(settings.className);
 			settings.contentHandler.call(this, tooltip); // the element on which the event occured will be referenced by 'this' in the callback function
+			
 			// initial tooltip-position
-
 			var initPositions = {
 				x: !settings.absolutePositioning ? e.pageX + settings.position.x : settings.position.x,
 				y: !settings.absolutePositioning ? e.pageY + settings.position.y : settings.position.y
@@ -87,7 +81,8 @@
 			$(elem.data('elem')).fadeOut(settings.fadeSpeed, function() {
 				$(this).remove();
 			});
-			elem.removeClass('jq-tooltip-active').data('elem', undefined).attr('title', elem.data('_oldTitle'));
+			
+			elem.attr('title', elem.data('_title')).removeClass('jq-tooltip-active').data('elem', undefined);
 		}
 
 		// use one central event to update all tooltips or remove them if they shouldn't be active anymore
@@ -107,6 +102,13 @@
 			});
 
 		});
+		
+		// save the current mouse position to the document
+		if(!$(document).data('mousePosition')) {
+			$(document).bind('mousemove', function(e) {
+				$(this).data('mousePosition', {x: e.pageX, y: e.pageY});
+			});
+		}
 
 	};
 
@@ -121,11 +123,6 @@
 		return mp.x >= box.topLeft.x && mp.x <= box.bottomRight.x && mp.y >= box.topLeft.y && mp.y <= box.bottomRight.y;
 
 	};
-
-	// save the current mouse position to the document
-	$(document).bind('mousemove', function(e) {
-		$(this).data('mousePosition', {x: e.pageX, y: e.pageY});
-	});
 
 })(jQuery, document);
 
