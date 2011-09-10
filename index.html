@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>jQuery.liveTooltip()</title>
+		<link href="style.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<h1>jQuery.liveTooltip()</h1>
+		<p>This plugin provides an easy way to add tooltips to elements.</p>
+		<h2>Examples</h2>
+		<p>This first example is a quite simple usecase: it renders the <code>title</code>-attribute of the links in a beautiful way (in contrast to the default browser-tooltip).</p>
+		<h3>Demo</h3>
+		<ul>
+			<li><a href="http://google.de/" title="This is a link to Google">Google</a></li>
+			<li><a href="http://facebook.com" title="This is another link, this time to Facebook">Facebook</a></li>
+			<li><a href="http://github.com" title="GitHub rocks :)">Github</a></li>
+		</ul>
+		<h3>Code</h3>
+		<pre>
+$(document).ready(function() {
+	$('ul li a').liveTooltip({
+		contentHandler: function(tooltip) {
+			tooltip.text($(this).data('_title')); // title is stored in element.data to prevent 
+the browser-tooltip while hovering the element
+		}
+	});
+});
+		</pre>
+		<h3>Explanation</h3>
+		<p></p>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+		<script src="liveTooltip.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('ul li a').liveTooltip({
+					contentHandler: function(tooltip) {
+						tooltip.text($(this).data('_title')); // title is stored in element.data to prevent the browser-tooltip while hovering the element
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

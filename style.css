@@ -1,0 +1,15 @@
+body {
+	font-size: 18px;
+	line-height: 1.6;
+	font-family: Verdana;
+	width: 80%;
+	min-width: 600px;
+	margin: 0 auto;
+}
+
+.jq-tooltip {
+	border: 1px dotted #999;
+	background: rgba(125, 180, 156, 0.6);
+	padding: 3px;
+}
+
