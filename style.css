@@ -3,8 +3,35 @@ body {
 	line-height: 1.6;
 	font-family: Verdana;
 	width: 80%;
-	min-width: 600px;
-	margin: 0 auto;
+	min-width: 640px;
+	margin: 10px auto;
+	border: 1px solid #aaa;
+	padding: 10px;
+	box-shadow: 3px 3px 6px 3px #aaa;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table tr td, table tr th {
+	border: 1px solid #000;
+	vertical-align: top;
+	padding: 5px;
+}
+
+table th {
+	background: #eee;
+	text-align: center;
+}
+
+table tr td:nth-child(2) {
+	text-align: center;
+}
+
+pre {
+	font-size: 18px;
+	overflow: auto;
 }
 
 .jq-tooltip {
