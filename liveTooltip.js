@@ -25,7 +25,7 @@
 			contentHandler: $.noop,
 			startEvents: 'mouseenter',
 			stopEvents: 'mouseleave',
-			updateEvents: 'mousemove',
+			//updateEvents: 'mousemove',
 			position: {x: 20, y: 20},
 			absolutePositioning: false,
 			trace: true,
@@ -40,8 +40,10 @@
 		// add tooltip if one of the startEvents is fired
 		this.live(settings.startEvents, settings, function(e) {
 			e.preventDefault();
-			$(this).data('_title', this.title).removeAttr('title');
-			setTimeout(function(e, elem, settings) {initTooltip.call(elem, e, settings);}, settings.delay, e, this, settings);
+
+			setTimeout(function(e, elem, settings) {
+				initTooltip.call(elem, e, settings);
+			}, settings.delay, e, this, settings);
 
 		});
 		// remove tooltip if one of the stopEvents is fired
@@ -54,10 +56,9 @@
 		function initTooltip(e, settings) {
 			if($(this).hasClass('jq-tooltip-active') || !$(this).isMouseOver())
 				return;
-
+			
 			// create tooltip
 			var tooltip = $('<div></div>').addClass('tooltip jq-tooltip').addClass(settings.className);
-			settings.contentHandler.call(this, tooltip); // the element on which the event occured will be referenced by 'this' in the callback function
 			
 			// initial tooltip-position
 			var initPositions = {
@@ -69,7 +70,11 @@
 			tooltip.hide().appendTo('body').fadeIn(settings.fadeSpeed);
 			tooltip.data('constructor', this); // make it possible for callback functions to determine the constructing element of a tooltip
 			$(this).data('settings', settings).data('elem', tooltip).addClass('jq-tooltip-active');
-
+			$(this).data('_title', $(this).attr('title')).removeAttr('title');
+			
+			settings.contentHandler.call(this, tooltip); // the element on which the event occured will be referenced by 'this' in the callback function
+			
+			
 		}
 
 		function removeTooltip() {
@@ -82,7 +87,11 @@
 				$(this).remove();
 			});
 			
-			elem.attr('title', elem.data('_title')).removeClass('jq-tooltip-active').data('elem', undefined);
+			// restore title-attribute
+			if(elem.data('_title'))
+				elem.attr('title', elem.data('_title'));
+			
+			elem.removeClass('jq-tooltip-active').data('elem', undefined);
 		}
 
 		// use one central event to update all tooltips or remove them if they shouldn't be active anymore
@@ -117,11 +126,10 @@
 		var 
 			elem = $(this[0]),
 			offset = elem.offset(),
-			box = {topLeft: {x: offset.left, y: offset.top}, bottomRight: {x: offset.left + elem.width(), y: offset.top + elem.height()}},
+			box = {topLeft: {x: offset.left, y: offset.top}, bottomRight: {x: offset.left + elem.outerWidth() + 1, y: offset.top + elem.outerHeight() + 1}},
 			mp = $(document).data('mousePosition');
-
 		return mp.x >= box.topLeft.x && mp.x <= box.bottomRight.x && mp.y >= box.topLeft.y && mp.y <= box.bottomRight.y;
-
+	
 	};
 
 })(jQuery, document);
