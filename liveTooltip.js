@@ -1,5 +1,5 @@
 /*
-    Live Tooltips 0.1 (compatible: jQuery 1.4.x)
+    Live Tooltips 0.1 (compatible with jQuery 1.4.x or newer)
 	by Patrick Bisenius, 2011
 
     This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,8 @@
 			absolutePositioning: false,
 			trace: true,
 			delay: 0,
-			className: ''
+			className: '',
+			fitInWindow: true
 		};
 		// merge with plugin-params, fall back to defaults
 		var settings = $.extend(defaults, options);
@@ -106,8 +107,22 @@
 				if(settings.stopEvents.indexOf('mouseleave') != -1 && !$this.isMouseOver())
 					removeTooltip.call($this);
 
-				if(settings.trace)
-					tooltip.css({top: e.pageY + settings.position.y, left: e.pageX + settings.position.x});
+				
+
+				if(settings.trace) {
+					var position = {
+						top: e.pageY + settings.position.y,
+						left: e.pageX + settings.position.x
+					};
+
+					if(settings.fitInWindow) {
+						var $window = $(window);
+						
+						position.left += Math.min(0, $window.width() - position.left - tooltip.width());
+						position.top += Math.min(0, $window.scrollTop() + $window.height() - position.top - tooltip.height());
+					}
+					tooltip.css(position);
+				}
 			});
 
 		});
