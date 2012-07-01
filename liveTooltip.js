@@ -1,6 +1,6 @@
 /*
     Live Tooltips 0.1 (compatible with jQuery 1.4.x or newer)
-	by Patrick Bisenius, 2011
+	by Patrick Bisenius, 2011 - 2012
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@
 			}, settings.delay, e, this, settings);
 
 		});
+                
 		// remove tooltip if one of the stopEvents is fired
 		this.live(settings.stopEvents, settings, function(e) {
 			e.preventDefault();
